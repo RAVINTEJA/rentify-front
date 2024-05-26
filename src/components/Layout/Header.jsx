@@ -4,7 +4,7 @@ function Header() {
 
     const handleLogout = () => {
         localStorage.removeItem("token");
-        window.location.reload();
+        window.location.href = "/";
     }
   
     return (
