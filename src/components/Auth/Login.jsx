@@ -1,5 +1,5 @@
 import  { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,Link } from 'react-router-dom';
 import api from '../../services/api';
 
 const Login = () => {
@@ -27,7 +27,7 @@ const Login = () => {
   };
 
   return (
-    <div className="flex items-center justify-center h-screen bg-background">
+    <div className="flex flex-col items-center justify-center h-screen bg-background">
       <form className="w-full max-w-md p-8 bg-white rounded shadow-md" onSubmit={onSubmit}>
         <h2 className="mb-6 text-2xl font-bold text-primary">Login</h2>
         <input
@@ -50,6 +50,9 @@ const Login = () => {
         />
         <button type="submit" className="w-full p-3 text-white rounded bg-primary">Login</button>
       </form>
+      <p className="mt-4 text-red-200-center text">
+        New user? <Link to="/register">Register</Link>
+      </p>
     </div>
   );
 };
