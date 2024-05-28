@@ -1,22 +1,8 @@
-import { useEffect, useState } from 'react';
-import api from '../../services/api';
 import PropertyItem from '../Property/PropertyItem';
 
-const Properties = () => {
-  const [properties, setProperties] = useState([]);
+import PropTypes from 'prop-types';
 
-  useEffect(() => {
-    const fetchProperties = async () => {
-      try {
-        const res = await api.get('/properties');
-        setProperties(res.data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    fetchProperties();
-  }, []);
+const Properties = ({properties}) => {
 
   return (
     <div className="min-h-screen p-8 bg-background">
@@ -28,6 +14,10 @@ const Properties = () => {
       </ul>
     </div>
   );
+};
+
+Properties.propTypes = {
+  properties: PropTypes.array.isRequired
 };
 
 export default Properties;
