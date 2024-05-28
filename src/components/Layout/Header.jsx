@@ -1,11 +1,22 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 function Header() {
     const [isOpen, setIsOpen] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            setIsLoggedIn(true);
+        }
+    }, []);
+
     const handleLogout = () => {
         localStorage.removeItem('token');
-        window.location.href = '/';
+        setIsLoggedIn(false);
+        navigate('/'); // Redirect to home or login page
     };
 
     return (
@@ -27,21 +38,29 @@ function Header() {
                     <Link to="/" className="px-4 py-2 hover:underline">
                         Home
                     </Link>
-                    <Link to="/login" className="px-4 py-2 hover:underline">
-                        Login
-                    </Link>
-                    <Link to="/register" className="px-4 py-2 hover:underline">
-                        Register
-                    </Link>
-                    <Link to="/dashboard" className="px-4 py-2 hover:underline">
-                        Dashboard
-                    </Link>
-                    <button
-                        onClick={handleLogout}
-                        className="px-4 py-2 text-white rounded bg-secondary"
-                    >
-                        Logout
-                    </button>
+                    {!isLoggedIn && (
+                        <Link to="/login" className="px-4 py-2 hover:underline">
+                            Login
+                        </Link>
+                    )}
+                    {!isLoggedIn && (
+                        <Link to="/register" className="px-4 py-2 hover:underline">
+                            Register
+                        </Link>
+                    )}
+                    {isLoggedIn && (
+                        <Link to="/dashboard" className="px-4 py-2 hover:underline">
+                            Dashboard
+                        </Link>
+                    )}
+                    {isLoggedIn && (
+                        <button
+                            onClick={handleLogout}
+                            className="px-4 py-2 text-white rounded bg-secondary"
+                        >
+                            Logout
+                        </button>
+                    )}
                 </div>
             </nav>
             {isOpen && (
@@ -49,21 +68,29 @@ function Header() {
                     <Link to="/" className="block px-4 py-2 text-black hover:underline">
                         Home
                     </Link>
-                    <Link to="/login" className="block px-4 py-2 text-black hover:underline">
-                        Login
-                    </Link>
-                    <Link to="/register" className="block px-4 py-2 text-black hover:underline">
-                        Register
-                    </Link>
-                    <Link to="/dashboard" className="block px-4 py-2 text-black hover:underline">
-                        Dashboard
-                    </Link>
-                    <button
-                        onClick={handleLogout}
-                        className="block w-full px-4 py-2 text-left text-white bg-secondary"
-                    >
-                        Logout
-                    </button>
+                    {!isLoggedIn && (
+                        <Link to="/login" className="block px-4 py-2 text-black hover:underline">
+                            Login
+                        </Link>
+                    )}
+                    {!isLoggedIn && (
+                        <Link to="/register" className="block px-4 py-2 text-black hover:underline">
+                            Register
+                        </Link>
+                    )}
+                    {isLoggedIn && (
+                        <Link to="/dashboard" className="block px-4 py-2 text-black hover:underline">
+                            Dashboard
+                        </Link>
+                    )}
+                    {isLoggedIn && (
+                        <button
+                            onClick={handleLogout}
+                            className="block w-full px-4 py-2 text-left text-white bg-secondary"
+                        >
+                            Logout
+                        </button>
+                    )}
                 </div>
             )}
         </header>
