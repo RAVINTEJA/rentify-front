@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 
@@ -6,6 +6,21 @@ function Header() {
     const [isOpen, setIsOpen] = useState(false);
     const { isLoggedIn, logout } = useAuth();
     const navigate = useNavigate();
+    const menuRef = useRef(null);
+    const buttonRef = useRef(null);
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (menuRef.current && !menuRef.current.contains(event.target) && !buttonRef.current.contains(event.target)) {
+                setIsOpen(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
 
     const handleLogout = () => {
         logout();
@@ -18,7 +33,7 @@ function Header() {
                 <div className="text-lg font-bold">
                     <Link to="/">Rentify</Link>
                 </div>
-                <button onClick={() => setIsOpen(!isOpen)} className="md:hidden">
+                <button ref={buttonRef} onClick={() => setIsOpen(!isOpen)} className="md:hidden">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-6 h-6">
                         {isOpen ? (
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -57,7 +72,7 @@ function Header() {
                 </div>
             </nav>
             {isOpen && (
-                <div className="absolute right-0 w-full py-2 mt-2 bg-white rounded-lg shadow-xl md:hidden">
+                <div ref={menuRef} className="absolute right-0 w-full py-2 mt-2 bg-white rounded-lg shadow-xl md:hidden">
                     <Link to="/" className="block px-4 py-2 text-black hover:underline">
                         Home
                     </Link>
