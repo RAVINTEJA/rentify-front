@@ -1,32 +1,25 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import PrivateRoute from "../../components/PrivateRoute";
 
 import api from "../../services/api";
 
 const PropertyItem = ({ property }) => {
-    const [likes, setLikes] = useState(0);
+    const [likes, setLikes] = useState(property._count.likes);
+    const [isLiked, setIsLiked] = useState(false);
     const [sellerDetails, setSellerDetails] = useState(null);
 
     const navigate = useNavigate();
-    useEffect(() => {
-        const fetchLikes = async () => {
-            try {
-                const res = await api.get(`/likes/${property.id}`);
-                setLikes(res.data);
-            } catch (error) {
-                console.error(error);
-            }
-        };
-
-        fetchLikes();
-    }, [property.id, likes]);
-
     const likeProperty = async () => {
         try {
-            console.log(property.id);
-            await api.post(`/likes/${property.id}`);
-            setLikes(likes + 1);
-            console.log(likes);
+            if (!isLiked) {
+                await api.post(`/likes/${property.id}`);
+                setLikes(likes + 1);
+                setIsLiked(true);
+            } else {
+                await api.delete(`/likes/${property.id}`);
+                setLikes(likes - 1);
+                setIsLiked(false);
+            }
         } catch (error) {
             console.error(error);
         }
@@ -80,18 +73,18 @@ const PropertyItem = ({ property }) => {
                 className="flex justify-between object-cover w-full h-48 mb-4 rounded"
             />
             <div className="flex justify-center gap-4">
-            <button
-                onClick={likeProperty}
-                className="p-2 mb-2 text-white rounded bg-secondary"
-            >
-                Likes {likes}
-            </button>
-            <button
-                onClick={expressInterest}
-                className="p-2 mb-2 text-white rounded bg-accent"
-            >
-                I&apos;m Interested
-            </button>
+                <button
+                    onClick={likeProperty}
+                    className="p-2 mb-2 text-white rounded bg-secondary"
+                >
+                    Likes {likes}
+                </button>
+                <button
+                    onClick={expressInterest}
+                    className="p-2 mb-2 text-white rounded bg-accent"
+                >
+                    I&apos;m Interested
+                </button>
             </div>
             {sellerDetails && (
                 <PrivateRoute>
