@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
-import PrivateRoute from "../../components/PrivateRoute";
 import api from "../../services/api";
-
+import Modal from "../Utils/Modal";
 const PropertyItem = ({ property }) => {
     const [likes, setLikes] = useState(property._count.likes);
     const [isLiked, setIsLiked] = useState(false);
     const [isInterested, setIsInterested] = useState(false);
     const [sellerDetails, setSellerDetails] = useState(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const navigate = useNavigate();
     
@@ -34,6 +34,7 @@ const PropertyItem = ({ property }) => {
             console.log(res.data);
             setSellerDetails(res.data);
             setIsInterested(true);
+            setIsModalOpen(true); // Open the modal when interest is expressed
         } catch (error) {
             if (error.response.status === 401) {
                 window.alert("Please login to express interest");
@@ -44,9 +45,13 @@ const PropertyItem = ({ property }) => {
         }
     };
 
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
+
     return (
         <li className="p-6 bg-white rounded-lg shadow-lg border border-gray-300 flex flex-col md:flex-row">
-            <div className="relative w-full md:w-1/+++++++++++2">
+            <div className="relative w-full md:w-1/3">
                 <img
                     src={property.images[0]}
                     className="object-cover w-full h-48 mb-4 rounded-lg md:h-full"
@@ -116,16 +121,20 @@ const PropertyItem = ({ property }) => {
                         Request a Callback
                     </button>
                 </div>
-                {sellerDetails && (
-                    <PrivateRoute>
-                        <div className="p-4 mt-4 bg-gray-100 rounded-lg border border-gray-300">
-                            <h4 className="mb-2 font-bold text-primary">Seller Details</h4>
-                            <p className="text-textSecondary">Name: {sellerDetails.name}</p>
-                            <p className="text-textSecondary">Email: {sellerDetails.email}</p>
-                            <p className="text-textSecondary">Phone: {sellerDetails.phone}</p>
-                        </div>
-                    </PrivateRoute>
-                )}
+                <Modal isOpen={isModalOpen} onClose={closeModal}>
+                    <div className="p-4">
+                        <h4 className="mb-2 font-bold text-primary">Seller Details</h4>
+                        {sellerDetails ? (
+                            <>
+                                <p className="text-textSecondary">Name: {sellerDetails.name}</p>
+                                <p className="text-textSecondary">Email: {sellerDetails.email}</p>
+                                <p className="text-textSecondary">Phone: {sellerDetails.phone}</p>
+                            </>
+                        ) : (
+                            <p className="text-textSecondary">Loading...</p>
+                        )}
+                    </div>
+                </Modal>
             </div>
         </li>
     );
@@ -144,6 +153,9 @@ PropertyItem.propTypes = {
         nearbyHospitals: PropTypes.string.isRequired,
         nearbyColleges: PropTypes.string.isRequired,
         images: PropTypes.array.isRequired,
+        _count: PropTypes.shape({
+            likes: PropTypes.number.isRequired,
+        }).isRequired,
     }).isRequired,
 };
 
