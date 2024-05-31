@@ -39,9 +39,10 @@ const PostProperty = () => {
   };
 
   return (
-    <div className="flex items-center justify-center ">
-      <form className="w-full max-w-md p-8 bg-white rounded-lg shadow-lg" onSubmit={onSubmit}>
-        <h2 className="mb-6 text-3xl font-bold text-center text-primary">Post Property</h2>
+    <div className="container flex flex-col items-center justify-center md:px-16 lg:px-32 ">
+      <h2 className="py-4  text-3xl font-bold text-center text-primary">Post Property</h2>
+      <form className="w-full  p-8  grid gap-4 md:grid-cols-2 bg-white rounded-lg shadow-lg" onSubmit={onSubmit}>
+        
 
         <div className="mb-4">
           <label className="block mb-2 text-sm font-medium text-gray-700">Place</label>

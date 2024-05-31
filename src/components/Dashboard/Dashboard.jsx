@@ -22,7 +22,6 @@ function Dashboard() {
 
     return (
         <>
-            <h2 className="mb-4 text-2xl font-bold">Dashboard</h2>
             <AddProperty />
             <PrivateRoute>
                 <h2 className="mb-6 mt-8 text-2xl font-bold text-primary">
