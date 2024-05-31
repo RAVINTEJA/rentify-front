@@ -3,15 +3,16 @@ import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import api from "../../services/api";
 import Modal from "../Utils/Modal";
+
 const PropertyItem = ({ property }) => {
-    const [likes, setLikes] = useState(property._count.likes);
+    const [likes, setLikes] = useState(property._count ? property._count.likes : 0);
     const [isLiked, setIsLiked] = useState(false);
     const [isInterested, setIsInterested] = useState(false);
     const [sellerDetails, setSellerDetails] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const navigate = useNavigate();
-    
+
     const likeProperty = async () => {
         try {
             if (!isLiked) {
@@ -36,7 +37,7 @@ const PropertyItem = ({ property }) => {
             setIsInterested(true);
             setIsModalOpen(true); // Open the modal when interest is expressed
         } catch (error) {
-            if (error.response.status === 401) {
+            if (error.response && error.response.status === 401) {
                 window.alert("Please login to express interest");
                 navigate("/register");
             } else {
@@ -57,7 +58,7 @@ const PropertyItem = ({ property }) => {
                     className="object-cover w-full h-48 mb-4 rounded-lg md:h-full"
                 />
                 <div className="absolute top-4 left-4 bg-amber-400 text-white px-2 py-1 rounded-md">
-                    Preferred By Students
+                    Preferred By Bachelors
                 </div>
                 <div className="absolute bottom-4 left-4 bg-gray-800 text-white px-2 py-1 rounded-md">
                     5 People Viewing Now
@@ -99,26 +100,18 @@ const PropertyItem = ({ property }) => {
                     <button
                         onClick={likeProperty}
                         className={`px-4 py-2 rounded-lg border border-primary transition ${
-                            isLiked ? 'bg-primary text-white' : 'bg-white text-primary'
-                        } hover:bg-primary hover:text-white`}
+                            isLiked ? 'bg-secondary text-white' : 'bg-white text-secondary'
+                        } hover:bg-secondary hover:text-white`}
                     >
                         Likes {likes}
                     </button>
                     <button
                         onClick={expressInterest}
                         className={`px-4 py-2 rounded-lg border border-primary transition ${
-                            isInterested ? 'bg-primary text-white' : 'bg-white text-primary'
-                        } hover:bg-primary hover:text-white`}
+                            isInterested ? 'bg-accent text-white' : 'bg-white text-accent'
+                        } hover:bg-accent hover:text-white`}
                     >
                         I&apos;m Interested
-                    </button>
-                </div>
-                <div className="flex justify-between mt-4">
-                    <button className="px-4 py-2 text-primary border border-primary rounded-lg hover:bg-primary hover:text-white transition">
-                        Schedule a Visit
-                    </button>
-                    <button className="px-4 py-2 text-primary border border-primary rounded-lg hover:bg-primary hover:text-white transition">
-                        Request a Callback
                     </button>
                 </div>
                 <Modal isOpen={isModalOpen} onClose={closeModal}>
@@ -143,8 +136,7 @@ const PropertyItem = ({ property }) => {
 PropertyItem.propTypes = {
     property: PropTypes.shape({
         id: PropTypes.number.isRequired,
-        title: PropTypes.string.isRequired,
-        description: PropTypes.string.isRequired,
+        title: PropTypes.string,
         place: PropTypes.string.isRequired,
         area: PropTypes.number.isRequired,
         bedrooms: PropTypes.number.isRequired,
@@ -154,8 +146,8 @@ PropertyItem.propTypes = {
         nearbyColleges: PropTypes.string.isRequired,
         images: PropTypes.array.isRequired,
         _count: PropTypes.shape({
-            likes: PropTypes.number.isRequired,
-        }).isRequired,
+            likes: PropTypes.number,
+        }),
     }).isRequired,
 };
 
