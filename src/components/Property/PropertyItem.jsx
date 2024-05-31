@@ -16,16 +16,24 @@ const PropertyItem = ({ property }) => {
     const likeProperty = async () => {
         try {
             if (!isLiked) {
-                await api.post(`/likes/${property.id}`);
                 setLikes(likes + 1);
                 setIsLiked(true);
+                await api.post(`/likes/${property.id}`);
             } else {
-                await api.delete(`/likes/${property.id}`);
                 setLikes(likes - 1);
                 setIsLiked(false);
+                await api.delete(`/likes/${property.id}`);
             }
         } catch (error) {
             console.error(error);
+            // Revert the state changes if the API call fails
+            if (isLiked) {
+                setLikes(likes + 1);
+                setIsLiked(true);
+            } else {
+                setLikes(likes - 1);
+                setIsLiked(false);
+            }
         }
     };
 
