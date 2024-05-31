@@ -16,23 +16,23 @@ const PropertyItem = ({ property }) => {
     const likeProperty = async () => {
         try {
             if (!isLiked) {
-                setLikes(likes + 1);
                 setIsLiked(true);
+                setLikes(likes + 1);
                 await api.post(`/likes/${property.id}`);
-            } else {
-                setLikes(likes - 1);
+            } else {                
                 setIsLiked(false);
+                setLikes(likes - 1);
                 await api.delete(`/likes/${property.id}`);
             }
         } catch (error) {
             console.error(error);
             // Revert the state changes if the API call fails
             if (isLiked) {
-                setLikes(likes + 1);
                 setIsLiked(true);
+                setLikes(likes + 1);
             } else {
-                setLikes(likes - 1);
                 setIsLiked(false);
+                setLikes(likes - 1);
             }
         }
     };
@@ -127,7 +127,7 @@ const PropertyItem = ({ property }) => {
                         <h4 className="mb-2 font-bold text-primary">Seller Details</h4>
                         {sellerDetails ? (
                             <>
-                                <p className="text-textSecondary">Name: {sellerDetails.name}</p>
+                                <p className="text-textSecondary">Name: {sellerDetails.firstName + " " + sellerDetails.lastName}</p>
                                 <p className="text-textSecondary">Email: {sellerDetails.email}</p>
                                 <p className="text-textSecondary">Phone: {sellerDetails.phone}</p>
                             </>
