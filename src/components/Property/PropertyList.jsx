@@ -6,7 +6,7 @@ const Properties = ({properties}) => {
 
   return (
     <div className="min-h-screen  pt-0 bg-background">
-      <ul className="grid grid-cols-1 px-32 gap-4 md:grid-cols-1">
+      <ul className="grid grid-cols-1 gap-4 md:grid-cols-1">
         {properties.map((property) => (
           <PropertyItem key={property.id} property={property} />
         ))}

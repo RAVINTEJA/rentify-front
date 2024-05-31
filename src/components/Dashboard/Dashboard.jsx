@@ -21,15 +21,15 @@ function Dashboard() {
     }, []);
 
     return (
-        <>
+        <div className="md:px-16 lg:px-32">
             <AddProperty />
             <PrivateRoute>
-                <h2 className="mb-6 mt-8 text-2xl px-32 font-bold text-primary">
+                <h2 className="mb-6 mt-8 text-2xl font-bold text-primary">
                     My Properties
                 </h2>
                 <PropertyList properties={properties} />
             </PrivateRoute>
-        </>
+        </div>
     );
 }
 
