@@ -39,7 +39,7 @@ const PostProperty = () => {
   };
 
   return (
-    <div className="flex items-center justify-center h-screen bg-gradient-to-r from-blue-500 to-purple-600">
+    <div className="flex items-center justify-center ">
       <form className="w-full max-w-md p-8 bg-white rounded-lg shadow-lg" onSubmit={onSubmit}>
         <h2 className="mb-6 text-3xl font-bold text-center text-primary">Post Property</h2>
 

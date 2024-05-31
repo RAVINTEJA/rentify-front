@@ -19,15 +19,18 @@ function Dashboard() {
 
         fetchProperties();
     }, []);
-    
+
     return (
-        <div>
+        <>
             <h2 className="mb-4 text-2xl font-bold">Dashboard</h2>
             <AddProperty />
             <PrivateRoute>
-              <PropertyList properties={properties} />
+                <h2 className="mb-6 mt-8 text-2xl font-bold text-primary">
+                    My Properties
+                </h2>
+                <PropertyList properties={properties} />
             </PrivateRoute>
-        </div>
+        </>
     );
 }
 

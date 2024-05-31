@@ -64,7 +64,7 @@ function Header() {
                     {isLoggedIn && (
                         <button
                             onClick={handleLogout}
-                            className="px-4 py-2 text-white rounded bg-secondary"
+                            className="px-4 py-2 text-white rounded bg-accent"
                         >
                             Logout
                         </button>
@@ -94,7 +94,7 @@ function Header() {
                     {isLoggedIn && (
                         <button
                             onClick={handleLogout}
-                            className="block w-full px-4 py-2 text-left text-white bg-secondary"
+                            className="block w-full px-4 py-2 text-left text-white bg-accent"
                         >
                             Logout
                         </button>

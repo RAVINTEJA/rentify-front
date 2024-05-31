@@ -5,8 +5,7 @@ import PropTypes from 'prop-types';
 const Properties = ({properties}) => {
 
   return (
-    <div className="min-h-screen p-8 bg-background">
-      <h2 className="mb-6 text-2xl font-bold text-primary">Properties</h2>
+    <div className="min-h-screen  pt-0 bg-background">
       <ul className="grid grid-cols-1 gap-4 md:grid-cols-1">
         {properties.map((property) => (
           <PropertyItem key={property.id} property={property} />
